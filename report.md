@@ -1,2 +1,0 @@
-## Training Metrics
-### Accuracy

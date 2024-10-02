@@ -42,10 +42,6 @@ jobs:
       run: |
         uv run dvc repro
 
-    - name: Install additional dependencies
-      run: |
-        uv pip install pandas altair
-
     - name: Create CML report
       env:
         REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -55,40 +51,8 @@ jobs:
         # Find the latest metrics.csv file
         METRICS_FILE=$(find logs/train/runs -name "metrics.csv" | sort -r | head -n 1)
         
-        # Create plots using Python and Altair
-        uv run python - <<EOF
-        import pandas as pd
-        import altair as alt
-        import json
-
-        # Read the CSV file
-        df = pd.read_csv('$METRICS_FILE')
-
-        # Create plots
-        def create_plot(y_column, title):
-            chart = alt.Chart(df).mark_line().encode(
-                x='step:Q',
-                y=alt.Y(f'{y_column}:Q', scale=alt.Scale(zero=False)),
-                color='rev:N'
-            ).properties(
-                width=600,
-                height=400,
-                title=title
-            )
-            return chart
-
-        plots = [
-            ('train/acc', 'Training Accuracy'),
-            ('val/acc', 'Validation Accuracy'),
-            ('train/loss', 'Training Loss'),
-            ('val/loss', 'Validation Loss')
-        ]
-
-        for column, title in plots:
-            chart = create_plot(column, title)
-            chart.save(f'{column.replace("/", "_")}_plot.png')
-
-        EOF
+        # Generate plots using the Python script
+        uv run python scripts/generate_plots.py "$METRICS_FILE"
 
         # Add plots to the report
         echo "### Accuracy" >> report.md
