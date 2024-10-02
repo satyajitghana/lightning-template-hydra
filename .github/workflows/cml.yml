@@ -56,7 +56,7 @@ jobs:
         METRICS_FILE=$(find logs/train/runs -name "metrics.csv" | sort -r | head -n 1)
         
         # Create plots using Python and Altair
-        python - <<EOF
+        uv run python - <<EOF
         import pandas as pd
         import altair as alt
         import json
