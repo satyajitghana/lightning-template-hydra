@@ -31,7 +31,7 @@ jobs:
       uses: iterative/setup-dvc@v1
 
     - name: Setup CML
-      uses: iterative/setup-cml@v1
+      uses: iterative/setup-cml@v2
 
     - name: Pull DVC data
       env:
