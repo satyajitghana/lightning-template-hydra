@@ -2,7 +2,7 @@ name: Train and Report
 
 on:
   push:
-    branches: [ master ]
+    branches: [ dvc ]
 
 env:
   REGISTRY: ghcr.io
@@ -39,7 +39,7 @@ jobs:
 
     - name: Train model
       run: |
-        dvc repro
+        uv run dvc repro
 
     - name: Create CML report
       env:
