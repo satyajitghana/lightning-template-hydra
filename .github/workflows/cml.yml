@@ -2,6 +2,8 @@ name: Train and Report
 on:
   push:
     branches: [ session-06 ]
+  pull_request:
+    branches: [ session-06 ]
 jobs:
   train-and-report:
     runs-on: ubuntu-latest
